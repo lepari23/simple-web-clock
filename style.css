@@ -1,0 +1,419 @@
+/* ─── Reset ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+[hidden] { display: none !important; }
+
+/* ─── Themes ─────────────────────────────────────────────────────────────────── */
+:root {
+  --color-hours: ;
+  --color-minutes: ;
+  --color-seconds: ;
+}
+
+body[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --fg: #f0f0f0;
+  --settings-bg: #111;
+  --settings-border: #222;
+  --settings-fg: #ccc;
+  --flip-bg: #1c1c1c;
+  --flip-line: #0a0a0a;
+  --flip-shadow: rgba(0,0,0,0.6);
+}
+
+body[data-theme="light"] {
+  --bg: #f5f5f5;
+  --fg: #111;
+  --settings-bg: #e8e8e8;
+  --settings-border: #d0d0d0;
+  --settings-fg: #333;
+  --flip-bg: #ddd;
+  --flip-line: #f5f5f5;
+  --flip-shadow: rgba(0,0,0,0.2);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+body {
+  background: var(--page-bg, var(--bg));
+  color: var(--fg);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ─── Clock section ──────────────────────────────────────────────────────────── */
+#clock-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#clock-wrapper.show-both #analog-clock {
+  width: min(42vw, 48vh);
+  height: min(42vw, 48vh);
+}
+
+#clock-wrapper.show-both #digital-clock {
+  font-size: clamp(1.5rem, 9vw, 11vh);
+}
+
+#clock-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+#clock-wrapper.show-both {
+  gap: 2rem;
+}
+
+/* ─── Digital clock ──────────────────────────────────────────────────────────── */
+#digital-clock {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  font-size: clamp(3rem, 18vw, 22vh);
+  letter-spacing: 0.02em;
+}
+
+.dgroup {
+  display: inline-flex;
+}
+
+.sep {
+  display: inline-block;
+  margin: 0 0.04em;
+  opacity: 0.5;
+}
+
+/* Colors per component */
+#grp-h { color: var(--color-hours, var(--fg)); }
+#grp-m { color: var(--color-minutes, var(--fg)); }
+#grp-s { color: var(--color-seconds, var(--fg)); }
+
+/* ── Style: default ── */
+#digital-clock.style-default {
+  font-weight: 900;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ── Style: thin ── */
+#digital-clock.style-thin {
+  font-weight: 100;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.06em;
+}
+
+/* ── Style: mono ── */
+#digital-clock.style-mono {
+  font-weight: 400;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.08em;
+}
+
+/* ── Style: flip ── */
+#digital-clock.style-flip {
+  font-weight: 700;
+  font-family: system-ui, -apple-system, sans-serif;
+  gap: 0;
+  letter-spacing: 0;
+}
+
+#digital-clock.style-flip .dgroup {
+  gap: 0.04em;
+  perspective: 600px;
+}
+
+#digital-clock.style-flip .sep {
+  margin: 0 0.08em;
+  opacity: 0.4;
+  align-self: center;
+}
+
+#digital-clock.style-flip .digit {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--flip-bg);
+  border-radius: 0.1em;
+  padding: 0.05em 0.1em;
+  min-width: 0.72em;
+  box-shadow: 0 4px 8px var(--flip-shadow);
+}
+
+#digital-clock.style-flip .digit::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--flip-line);
+  opacity: 0.8;
+  z-index: 1;
+}
+
+@keyframes flip-card {
+  0%   { transform: rotateX(0deg); }
+  49%  { transform: rotateX(-90deg); }
+  50%  { transform: rotateX(90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+#digital-clock.style-flip .digit.flipping {
+  animation: flip-card 0.35s ease-in-out;
+}
+
+/* ─── AM/PM display ──────────────────────────────────────────────────────────── */
+#ampm-display {
+  font-size: clamp(0.8rem, 3vw, 3vh);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  opacity: 0.65;
+  text-transform: uppercase;
+  color: var(--fg);
+  order: 1;
+}
+
+/* ─── Date display ───────────────────────────────────────────────────────────── */
+#date-display {
+  font-size: clamp(0.8rem, 2.5vw, 2.5vh);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+  color: var(--fg);
+}
+
+/* ─── Analog clock ───────────────────────────────────────────────────────────── */
+#analog-clock {
+  width: min(55vw, 65vh);
+  height: min(55vw, 65vh);
+  color: var(--fg);
+  overflow: visible;
+}
+
+/* ─── Scroll hint ────────────────────────────────────────────────────────────── */
+#scroll-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  font-size: 0.75rem;
+  opacity: 0.3;
+  letter-spacing: 0.15em;
+  user-select: none;
+}
+
+:fullscreen #scroll-hint          { display: none; }
+:-webkit-full-screen #scroll-hint { display: none; }
+
+/* ─── Fullscreen button ──────────────────────────────────────────────────────── */
+#btn-fullscreen {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 1.4rem;
+  background: none;
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  border-radius: 6px;
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+#btn-fullscreen:hover {
+  opacity: 0.9;
+}
+
+/* In fullscreen: lock scroll, hide settings, hide button until mouse moves */
+:fullscreen body          { overflow: hidden; }
+:-webkit-full-screen body { overflow: hidden; }
+
+:fullscreen #settings          { display: none; }
+:-webkit-full-screen #settings { display: none; }
+
+:fullscreen #btn-fullscreen          { opacity: 0; transition: opacity 0.5s; }
+:-webkit-full-screen #btn-fullscreen { opacity: 0; transition: opacity 0.5s; }
+
+:fullscreen body.fs-cursor #btn-fullscreen          { opacity: 0.7; }
+:-webkit-full-screen body.fs-cursor #btn-fullscreen { opacity: 0.7; }
+
+/* ─── Settings panel ─────────────────────────────────────────────────────────── */
+#settings {
+  background: var(--settings-bg);
+  border-top: 1px solid var(--settings-border);
+  padding: 3rem 2rem 4rem;
+  transition: background 0.3s;
+}
+
+.settings-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.settings-section h3 {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--settings-fg);
+  opacity: 0.5;
+  margin-bottom: 0.75rem;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--settings-border);
+  font-size: 0.95rem;
+  color: var(--settings-fg);
+  gap: 1rem;
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.setting-row select {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--settings-border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.setting-row input[type="color"] {
+  width: 2.4rem;
+  height: 1.8rem;
+  border: 1px solid var(--settings-border);
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+  padding: 2px;
+}
+
+.setting-row input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--fg);
+}
+
+.setting-row[hidden] {
+  display: none;
+}
+
+/* ─── Colour picker ──────────────────────────────────────────────────────────── */
+.color-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-swatch {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--settings-border);
+  flex-shrink: 0;
+}
+
+.color-hex {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--settings-border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  font-family: 'Courier New', Courier, monospace;
+  width: 6rem;
+}
+
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.6rem 0 0.5rem;
+}
+
+.palette-swatch {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s;
+  outline: none;
+}
+
+.palette-swatch:hover {
+  transform: scale(1.25);
+}
+
+.palette-swatch.active {
+  border-color: var(--fg);
+  transform: scale(1.15);
+}
+
+.palette-swatch.custom-swatch {
+  background: conic-gradient(#ff4444, #ffdd00, #44ff88, #00ccff, #aa44ff, #ff4444);
+}
+
+.palette-label {
+  font-size: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--settings-fg);
+  opacity: 0.55;
+  min-height: 1.2em;
+  padding: 0.1rem 0 0.4rem;
+}
+
+#btn-reset-colors,
+#btn-reset-bg {
+  background: none;
+  border: 1px solid var(--settings-border);
+  color: var(--settings-fg);
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#btn-reset-colors:hover,
+#btn-reset-bg:hover {
+  border-color: var(--fg);
+  color: var(--fg);
+}

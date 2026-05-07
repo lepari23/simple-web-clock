@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clock</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+
+  <div id="clock-section">
+    <div id="clock-wrapper">
+      <div id="date-display" hidden></div>
+
+      <div id="digital-clock">
+        <span class="dgroup" id="grp-h">
+          <span class="digit" id="d0"></span><span class="digit" id="d1"></span>
+        </span>
+        <span class="sep">:</span>
+        <span class="dgroup" id="grp-m">
+          <span class="digit" id="d2"></span><span class="digit" id="d3"></span>
+        </span>
+        <span class="sep" id="sep-s">:</span>
+        <span class="dgroup" id="grp-s">
+          <span class="digit" id="d4"></span><span class="digit" id="d5"></span>
+        </span>
+      </div>
+
+      <svg id="analog-clock" viewBox="-100 -100 200 200" hidden></svg>
+
+      <div id="ampm-display" hidden></div>
+    </div>
+
+    <div id="scroll-hint">↓ settings</div>
+  </div>
+
+  <section id="settings">
+    <div class="settings-inner">
+
+      <div class="settings-section">
+        <h3>Appearance</h3>
+
+        <div class="setting-row">
+          <label for="setting-theme">Theme</label>
+          <select id="setting-theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label for="setting-style">Clock style</label>
+          <select id="setting-style">
+            <option value="digital">Digital</option>
+            <option value="analog">Analog</option>
+          </select>
+        </div>
+
+        <div class="setting-row" id="row-digital-style">
+          <label for="setting-digital-style">Digital style</label>
+          <select id="setting-digital-style">
+            <option value="default">Default</option>
+            <option value="flip">Flip</option>
+            <option value="thin">Thin</option>
+            <option value="mono">Mono</option>
+          </select>
+        </div>
+
+        <div class="setting-row" id="row-analog-style">
+          <label for="setting-analog-style">Analog style</label>
+          <select id="setting-analog-style">
+            <option value="classic">Classic</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label>
+            <input type="checkbox" id="setting-show-both" />
+            Show digital and analog
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Time</h3>
+
+        <div class="setting-row" id="row-format">
+          <label for="setting-format">Format</label>
+          <select id="setting-format">
+            <option value="24">24-hour</option>
+            <option value="12">12-hour</option>
+          </select>
+        </div>
+
+        <div class="setting-row" id="row-ampm">
+          <label>
+            <input type="checkbox" id="setting-ampm" />
+            Show AM/PM
+          </label>
+        </div>
+
+        <div class="setting-row" id="row-show-colons">
+          <label>
+            <input type="checkbox" id="setting-show-colons" />
+            Show colons
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <label>
+            <input type="checkbox" id="setting-seconds" />
+            Show seconds
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Date</h3>
+
+        <div class="setting-row">
+          <label>
+            <input type="checkbox" id="setting-date" />
+            Show date
+          </label>
+        </div>
+
+        <div class="setting-row" id="row-date-position">
+          <label for="setting-date-position">Position</label>
+          <select id="setting-date-position">
+            <option value="above">Above clock</option>
+            <option value="below">Below clock</option>
+          </select>
+        </div>
+
+        <div class="setting-row" id="row-date-format">
+          <label for="setting-date-format">Format</label>
+          <select id="setting-date-format">
+            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+            <option value="long">Monday, 6 May 2026</option>
+            <option value="medium">6 May 2026</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Colors</h3>
+
+        <div class="setting-row">
+          <label>Colour defaults</label>
+          <button id="btn-reset-colors">Reset to defaults</button>
+        </div>
+
+        <div class="setting-row">
+          <label for="hex-hours">Hours</label>
+          <div class="color-input-wrap">
+            <span class="color-swatch" id="swatch-hours"></span>
+            <input type="text" id="hex-hours" class="color-hex" maxlength="7" spellcheck="false" autocomplete="off" />
+          </div>
+        </div>
+        <div class="color-palette" id="palette-hours"></div>
+
+        <div class="setting-row">
+          <label for="hex-minutes">Minutes</label>
+          <div class="color-input-wrap">
+            <span class="color-swatch" id="swatch-minutes"></span>
+            <input type="text" id="hex-minutes" class="color-hex" maxlength="7" spellcheck="false" autocomplete="off" />
+          </div>
+        </div>
+        <div class="color-palette" id="palette-minutes"></div>
+
+        <div id="color-seconds-group">
+          <div class="setting-row">
+            <label for="hex-seconds">Seconds</label>
+            <div class="color-input-wrap">
+              <span class="color-swatch" id="swatch-seconds"></span>
+              <input type="text" id="hex-seconds" class="color-hex" maxlength="7" spellcheck="false" autocomplete="off" />
+            </div>
+          </div>
+          <div class="color-palette" id="palette-seconds"></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Background</h3>
+
+        <div class="setting-row" id="row-bg-dark">
+          <label>Dark mode</label>
+          <div class="color-input-wrap">
+            <span class="color-swatch" id="swatch-bg-dark"></span>
+          </div>
+        </div>
+        <div class="color-palette" id="palette-bg-dark"></div>
+
+        <div class="setting-row" id="row-bg-light">
+          <label>Light mode</label>
+          <div class="color-input-wrap">
+            <span class="color-swatch" id="swatch-bg-light"></span>
+          </div>
+        </div>
+        <div class="color-palette" id="palette-bg-light"></div>
+
+        <div class="setting-row">
+          <label>Defaults</label>
+          <button id="btn-reset-bg">Reset to defaults</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <button id="btn-fullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)">⛶</button>
+
+  <script src="clock.js"></script>
+</body>
+</html>
