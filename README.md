@@ -10,7 +10,7 @@ No build step, no dependencies.
 
 ## Hosting:
 
-Deployed to GitHub Pages as-is. See: 
+Deployed to GitHub Pages as-is. See: lepari23.github.io/simple-web-clock/ 
 
 ## Features:
 
